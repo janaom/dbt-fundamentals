@@ -1,3 +1,5 @@
+
+Start running `dbt` command.
 ```shell
 repl:~/workspace$ dbt
 Usage: dbt [OPTIONS] COMMAND [ARGS]...
@@ -121,3 +123,13 @@ Commands:
 
   Specify one of these sub-commands and you can find more help from there.
 ```
+
+dbt, also known as the data build tool, is designed to simplify the management of data warehouses and transform the data within. This is primarily the T, or transformation, within ELT (or sometimes ETL) processes. It allows for easy transition between data warehouse types, such as Snowflake, BigQuery, Postgres, or in this course, DuckDB. dbt also provides the ability to use SQL across teams of multiple users, simplifying interaction. In addition, dbt translates between SQL dialects as appropriate to connect to different data sources and warehouses. 
+
+dbt mainly uses SQL to define data models and transform them. Here, a data model is just a way to organize your data. For example, it might organize your data into tables, views, or other database objects, and defines the relationships between them. For example, in an e-commerce context, a data model might link sales data to product details, and payment records. Such a data model allows for efficient analysis and reporting. As such, you should be fairly knowledgeable of SQL to get the most out of using dbt. dbt can define the relationships between data models and manage the dependencies that arise when using them. Consider if we had one model for customers and a second for orders; these can be linked easily with dbt. The dbt tool also performs the transformation process (or processes) as defined by the user. A basic example is converting the raw data from log files into database tables. Finally, dbt can also test and verify the data matches user-defined quality requirements. We'll cover all of these in later videos. 
+
+dbt is open-source, also known as dbt-core, primarily available as a command-line tool, available for all main operating systems such as Mac, Windows, and Linux. There is also a managed version of dbt known as dbt Cloud that we won't cover in this course. dbt and has many commands and sub commands we'll cover later. For now the two commands we need are `dbt -v` and `dbt -h` for help. 
+
+To create a project within dbt, we use the dbt init subcommand. When running `dbt init`, it asks two questions: the project name and which database or data warehouse type you'd like to use. Using `dbt init <projectname>`, it only asks for the database type. dbt init creates the top-level project folder, subfolders and configuration files for the project. Here is an example running dbt init with a project name of test_project and duckdb as our database type.
+
+<img width="1132" height="553" alt="image" src="https://github.com/user-attachments/assets/823e7ab1-e198-405a-b46d-6aa9245df602" />
