@@ -194,3 +194,46 @@ drwxr-sr-x 2 repl repl   22 Jun 19  2023 snapshots
 drwxr-sr-x 2 repl repl   22 Jun 19  2023 tests
 repl:~/workspace/nyc_yellow_taxi$
 ```
+
+## Instructions
+
+    Open the nyc_yellow_taxi/profiles.yml file in the editor window.
+    Modify the project name (the first line) to nyc_yellow_taxi.
+    Change the type: to duckdb.
+    In the terminal, use the command `dbt debug` to verify there are no errors.
+    When finished, submit the exercise.
+
+```shell
+#dbt_project.yml
+
+# Modify the project name
+nyc_yellow_taxi:
+  outputs:
+    dev:
+      # Change the database type
+      type: duckdb
+      path: dbt.duckdb
+  target: dev
+
+repl:~/workspace/nyc_yellow_taxi$ dbt debug
+15:31:27  Running with dbt=1.5.1
+15:31:27  dbt version: 1.5.1
+15:31:27  python version: 3.9.7
+15:31:27  python path: /usr/bin/python3.9
+15:31:27  os info: Linux-5.10.226-214.880.amzn2.x86_64-x86_64-with-glibc2.27
+15:31:27  Using profiles.yml file at /home/repl/workspace/nyc_yellow_taxi/profiles.yml
+15:31:27  Using dbt_project.yml file at /home/repl/workspace/nyc_yellow_taxi/dbt_project.yml
+15:31:27  Configuration:
+15:31:27    profiles.yml file [OK found and valid]
+15:31:27    dbt_project.yml file [OK found and valid]
+15:31:27  Required dependencies:
+15:31:27   - git [OK found]
+
+15:31:27  Connection:
+15:31:27    database: dbt
+15:31:27    schema: main
+15:31:27    path: dbt.duckdb
+15:31:27    Connection test: [OK connection ok]
+
+15:31:27  All checks passed!
+```
