@@ -133,3 +133,13 @@ dbt is open-source, also known as dbt-core, primarily available as a command-lin
 To create a project within dbt, we use the dbt init subcommand. When running `dbt init`, it asks two questions: the project name and which database or data warehouse type you'd like to use. Using `dbt init <projectname>`, it only asks for the database type. dbt init creates the top-level project folder, subfolders and configuration files for the project. Here is an example running dbt init with a project name of test_project and duckdb as our database type.
 
 <img width="1132" height="553" alt="image" src="https://github.com/user-attachments/assets/823e7ab1-e198-405a-b46d-6aa9245df602" />
+
+The next thing to understand about dbt projects is the profile. Within dbt, a profile is like a deployment scenario. This can include development, staging or testing, and production. A dbt project can have multiple profiles, allowing for different warehouse configurations per deployment scenario. These profiles (or configurations) are defined in the `profiles.yml` file, which must be created for new projects. This is an example profiles.yml file with two deployment types (dev and prod). The option target defines the default, in this case, dev. You may also wonder why to select DuckDB vs Snowflake. DuckDB is useful for development and testing locally, while Snowflake would be better used in production as other users will likely need to access the data. 
+
+<img width="1141" height="430" alt="image" src="https://github.com/user-attachments/assets/40f4d451-de9e-4ca7-b692-53ab374fb31e" />
+
+You may be wondering what YAML is. YAML stands for Yet Another Markup Language. It is a text based file format, where whitespace indentation matters, much like Python. YAML is used in many development scenarios for configuration, due to its relatively human-readable format. Writing or modifying YAML can be tricky, as you must maintain indentation as illustrated. In the profiles.yml example, dev: and prod: are at the same level of indentation. A YAML skeleton will be provided in this course, but be aware of the formatting requirements when creating one from scratch. 
+
+<img width="1134" height="442" alt="image" src="https://github.com/user-attachments/assets/95158639-6568-4ed4-a36c-12586e5d2f2b" />
+
+
