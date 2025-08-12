@@ -203,7 +203,7 @@ repl:~/workspace/nyc_yellow_taxi$
     In the terminal, use the command `dbt debug` to verify there are no errors.
     When finished, submit the exercise.
 
-```shell
+```python
 #dbt_project.yml
 
 # Modify the project name
