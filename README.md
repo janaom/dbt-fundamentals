@@ -143,3 +143,54 @@ You may be wondering what YAML is. YAML stands for Yet Another Markup Language. 
 <img width="1134" height="442" alt="image" src="https://github.com/user-attachments/assets/95158639-6568-4ed4-a36c-12586e5d2f2b" />
 
 
+## Instructions
+
+Run the appropriate dbt sub-command in the terminal window to initialize the project, using the information found in the ProjectInfo.txt file.
+Using the Linux command to change directory, change to the newly created project directory in the terminal window.
+Verify there are currently six main sub-directories (analyses, macros, models, seeds, snapshots, and tests).
+
+```shell
+repl:~/workspace$ dbt init
+15:28:29  Running with dbt=1.5.1
+Enter a name for your project (letters, digits, underscore): nyc_yellow_taxi
+Which database would you like to use?
+[1] duckdb
+
+(Don't see the one you want? https://docs.getdbt.com/docs/available-adapters)
+
+Enter a number: 1
+15:28:50  No sample profile found for duckdb.
+15:28:50  
+Your new dbt project "nyc_yellow_taxi" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+repl:~/workspace$ ls
+logs  nyc_yellow_taxi  ProjectInfo.txt
+repl:~/workspace$ cd nyc_yellow_taxi/
+repl:~/workspace/nyc_yellow_taxi$ ls -la
+total 12
+drwxr-sr-x 8 repl repl  151 Jun 19  2023 .
+drwxr-xr-x 1 repl repl   64 Aug 12 17:28 ..
+drwxr-sr-x 2 repl repl   22 Jun 19  2023 analyses
+-rw-r--r-- 1 repl repl 1277 Aug 12 17:28 dbt_project.yml
+-rw-r--r-- 1 repl repl   29 Jun 19  2023 .gitignore
+drwxr-sr-x 2 repl repl   22 Jun 19  2023 macros
+drwxr-sr-x 3 repl repl   21 Jun 19  2023 models
+-rw-r--r-- 1 repl repl  571 Jun 19  2023 README.md
+drwxr-sr-x 2 repl repl   22 Jun 19  2023 seeds
+drwxr-sr-x 2 repl repl   22 Jun 19  2023 snapshots
+drwxr-sr-x 2 repl repl   22 Jun 19  2023 tests
+repl:~/workspace/nyc_yellow_taxi$
+```
