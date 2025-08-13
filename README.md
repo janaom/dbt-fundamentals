@@ -249,3 +249,18 @@ A workflow for dbt depends somewhat on the user's needs, but typically follows a
 One thing to remember is the difference between tables and views within a database or data warehouse. There are a lot of technical implementation details, but generally, a table is an object within a database or warehouse that holds data. These objects take up space within the database depending on the size of the data inserted. The content of a table is only updated when a specific command changes said data. Views behave like a table and are queryable but hold no information. As such, they take up very little space within the database itself. A view is usually defined as a select query against another table or tables. The content in the response is generated with each query. We don't cover the implementation details here but are introducing them as dbt can create tables or views depending on the configurations you define. The actual implementation details for tables and views will depend on the database in question.
 
 <img width="1103" height="441" alt="image" src="https://github.com/user-attachments/assets/adbe35b5-de6c-4577-a6e7-6ae78d737a3c" />
+
+Example of python test in one task:
+```python
+#!/usr/bin/env python3
+import duckdb
+con = duckdb.connect('dbt.duckdb', read_only=True)
+print(con.sql('select * from taxi_rides_raw limit 10'))
+print(con.sql('select count(*) as total_rides from taxi_rides_raw'))
+if (con.execute('select count(*) as total_rides from taxi_rides_raw').fetchall()[0][0] == 300000):
+  with open('/home/repl/workspace/successful_data_check', 'w') as f:
+    f.write('300000')
+```
+running by ./datacheck
+
+<img width="984" height="458" alt="image" src="https://github.com/user-attachments/assets/8c363412-eb1c-4a6e-914b-1886b4a5fecf" />
