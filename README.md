@@ -282,3 +282,21 @@ Let's discuss the basics of creating a model in dbt. First, we create a director
 Before continuing, let's discuss the Parquet format. Parquet is a columnar, binary format used to efficiently store data. It is widespread for sharing and distributing datasets. Columnar is in contrast to row-based formats like database tables. DuckDB can read Parquet files, without needing to import the data first. This is done using the read_parquet function in a SQL query. For example, SELECT * FROM read_parquet filename.parquet. You can also reference the Parquet file directly using single quotes.
 
 <img width="1089" height="389" alt="image" src="https://github.com/user-attachments/assets/358a5866-fee2-4533-9f8f-57a9f62a19ba" />
+
+As we've discussed why you'd need to update your models, let's look at a potential workflow used when updating a dbt project. The first step is checking out a dbt project from your source control system, such as git. An example would be git clone dbt_project then opening the dbt_project folder. Git isn't required for dbt, but it is advantageous doing so as you can easily track changes / updates / modifications. Once you have the current project source, you'll find the appropriate model file in question and update the query contents. This could be updating the query directly, creating a subquery, or otherwise modifying the .sql file contents. After updating the models, you'll need to apply these changes to the project. This is often done by executing dbt run. Occasionally, larger changes need a full refresh of the model, which can be done by adding dash-f to the dbt run command. If you see an error in your update or the results don't appear as expected, you can try the full refresh option. Depending on your data and models, it might take longer to run than a simple update. Finally, once updates have been made and verified to work, you'll check the changes into source control to keep the process easy in the future.
+
+<img width="1080" height="488" alt="image" src="https://github.com/user-attachments/assets/0c6453b3-4629-49e8-934c-2c38591514f7" />
+
+In addition to directly updating .sql files for dbt models, you can also make changes in some YAML / .yml files. Typically these updates would be in two types of files, either the dbt_project.yml file or a model_properties.yml file.
+
+<img width="1108" height="556" alt="image" src="https://github.com/user-attachments/assets/440a4bd7-bb38-4f85-b264-092c7e9fd93b" />
+
+The dbt_project.yml file contains settings that relate to the full project. This includes items such as the project name, version, and directory locations. The materialization settings for a model can also reside here, though settings in this file are applied globally. These include whether models are created as tables / views / etc in the data warehouse. Note that there is one dbt_project.yml file per project.
+
+<img width="936" height="353" alt="image" src="https://github.com/user-attachments/assets/1ce0ff67-abbb-4c36-b3d6-9500f06ae750" />
+
+The model_properties.yml file is specific to settings for model information. This includes description, documentation details, and much more. Refer to the dbt documentation for more information. One interesting note is the file can actually be named anything as long as it exists somewhere in the models/ subdirectory and ends in a .yml extension. You can have as many of these .yml files as needed.
+
+<img width="1094" height="381" alt="image" src="https://github.com/user-attachments/assets/bc38c277-5822-4da4-ac80-64849a73e11f" />
+
+
