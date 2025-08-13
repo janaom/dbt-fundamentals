@@ -237,3 +237,15 @@ repl:~/workspace/nyc_yellow_taxi$ dbt debug
 
 15:31:27  All checks passed!
 ```
+
+A workflow for dbt depends somewhat on the user's needs, but typically follows as First, create the project using dbt init (or copy a working project from another location) Next, define or update its configuration in the profiles.yml file. We've already done these steps. The next step is where you'll spend most of your time developing with dbt; defining and using data models. We'll go over what a model represents soon. For now, think of it as the transformed version(s) of your raw data stored within the data warehouse. Models need to be executed using the dbt run subcommand. This command takes the source SQL code you've written, translates it as necessary for your deployment target (aka, profile), and executes the transformation process. Once complete, you'll need to verify and test your data and, if necessary, troubleshoot any issues. Finally, this process is repeated as necessary, typically going back to the model level when a new data source is required.
+
+<img width="1026" height="392" alt="image" src="https://github.com/user-attachments/assets/5f50ac97-e1ab-44a6-81d4-a83cfec90260" />
+
+`dbt run` is the subcommand that performs the data transformations and pushes updates to the warehouse. It should be executed whenever there are model changes, or when the data process needs to be materialized. Make sure to analyze the output of the dbt run command - it provides many details on the success or failures of each step in the dbt process. Please note that materialized has a specific meaning in dbt. It means to execute the transformations on the source data and place the results into tables or views. Finally we see an example of dbt run and some of its output. The output will vary based on project but typically shows some version information and then details as it processes the models within.
+
+<img width="1101" height="555" alt="image" src="https://github.com/user-attachments/assets/e2f1b6f2-b4c3-4d05-8837-712c836ee073" />
+
+One thing to remember is the difference between tables and views within a database or data warehouse. There are a lot of technical implementation details, but generally, a table is an object within a database or warehouse that holds data. These objects take up space within the database depending on the size of the data inserted. The content of a table is only updated when a specific command changes said data. Views behave like a table and are queryable but hold no information. As such, they take up very little space within the database itself. A view is usually defined as a select query against another table or tables. The content in the response is generated with each query. We don't cover the implementation details here but are introducing them as dbt can create tables or views depending on the configurations you define. The actual implementation details for tables and views will depend on the database in question.
+
+<img width="1103" height="441" alt="image" src="https://github.com/user-attachments/assets/adbe35b5-de6c-4577-a6e7-6ae78d737a3c" />
