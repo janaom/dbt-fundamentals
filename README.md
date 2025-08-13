@@ -250,7 +250,7 @@ One thing to remember is the difference between tables and views within a databa
 
 <img width="1103" height="441" alt="image" src="https://github.com/user-attachments/assets/adbe35b5-de6c-4577-a6e7-6ae78d737a3c" />
 
-Example of python test in one task:
+Example of python test 'datacheck' in one task:
 ```python
 #!/usr/bin/env python3
 import duckdb
@@ -264,3 +264,21 @@ if (con.execute('select count(*) as total_rides from taxi_rides_raw').fetchall()
 running by ./datacheck
 
 <img width="984" height="458" alt="image" src="https://github.com/user-attachments/assets/8c363412-eb1c-4a6e-914b-1886b4a5fecf" />
+
+Let's now discuss the idea of a dbt model, what it is, and how it's used within dbt.
+
+Before getting into how dbt uses models, let's discuss the general definition of a data model. There is no hard definition of a data model—its meaning depends on the context. At its core, a data model defines the logical organization and interpretation of a dataset whether a database table, Dataframe, or so forth. This could be a group of orders, customers, or the details of earthquakes in a given region. The data model also represents how a set of data and its components relate to each other. For example, various features of an animal, including number of legs, does it fly, etc, and how that information is maintained within the dataset. A primary purpose of a data model is to help users collaborate and understand the data in a common way.
+
+<img width="927" height="307" alt="image" src="https://github.com/user-attachments/assets/71c776d9-d681-4687-9b68-8039caa0fced" />
+
+A model in dbt represents something more specific than a basic data model - it represents the various transformations performed on the raw source datasets. These transformations are typically written in SQL, though newer versions of dbt can use Python for models / transformations. We won't be covering Python models in this course. Each model contains a SELECT query, transforming the source data as desired. These queries are saved in a text file, with a .sql extension. dbt automatically uses these files when tasked with operations, such as dbt run.
+
+<img width="1090" height="373" alt="image" src="https://github.com/user-attachments/assets/7367aef7-1433-46ba-90e6-22291721de3b" />
+
+Let's discuss the basics of creating a model in dbt. First, we create a directory under the models directory of your dbt project. This directory can be named anything, but may be referenced later, so it's best to keep it consistent. Next, a dot sql file is created as a text file. This can be done at the command line with a tool like touch, or via a text editor. We add the appropriate SQL statement to the text file. In this case, we select the first_name and last_name columns from the table source_table. Finally, execute `dbt run` to materialize the model.
+
+<img width="1110" height="462" alt="image" src="https://github.com/user-attachments/assets/2819e791-3abe-4457-bb6b-fb2ac2a04a71" />
+
+Before continuing, let's discuss the Parquet format. Parquet is a columnar, binary format used to efficiently store data. It is widespread for sharing and distributing datasets. Columnar is in contrast to row-based formats like database tables. DuckDB can read Parquet files, without needing to import the data first. This is done using the read_parquet function in a SQL query. For example, SELECT * FROM read_parquet filename.parquet. You can also reference the Parquet file directly using single quotes.
+
+<img width="1089" height="389" alt="image" src="https://github.com/user-attachments/assets/358a5866-fee2-4533-9f8f-57a9f62a19ba" />
