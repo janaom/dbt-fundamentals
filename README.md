@@ -319,3 +319,4 @@ To access the generated documentation, we'll need a web browser and the document
 
 <img width="1152" height="582" alt="image" src="https://github.com/user-attachments/assets/642b2598-2853-4e78-a875-fd7c17cb480a" />
 
+<img width="1172" height="483" alt="image" src="https://github.com/user-attachments/assets/39b00e19-c206-4b1b-aba5-bd3de29e8bf4" />
