@@ -320,3 +320,21 @@ To access the generated documentation, we'll need a web browser and the document
 <img width="1152" height="582" alt="image" src="https://github.com/user-attachments/assets/642b2598-2853-4e78-a875-fd7c17cb480a" />
 
 <img width="1172" height="483" alt="image" src="https://github.com/user-attachments/assets/39b00e19-c206-4b1b-aba5-bd3de29e8bf4" />
+
+We're going to soon talk about hierarchical models in dbt, but first we must discuss a templating language called Jinja. We're going to use Jinja to simplify the creation of our dbt models and other objects. 
+
+So what is a template? While the word has many uses, for our purposes it's easiest to define a template as a defined format that allows dbt to substitute information automatically. Most often, templates are simply text files that can be modified in most editors. We'll go over the details more in a moment, but a template is designed to simplify access and re-use. 
+
+We'll be using a specific templating language with dbt - one called Jinja. If you're not familiar with it, Jinja is a simple text-based templating system used in many tools beyond just dbt, such as Django and Flask. To define a Jinja template, simply put the desired content between two opening and closing curly braces within your text files. When dbt is run, it will replace the contents of the braces with the correct result. The dbt tool has many Jinja functions available for use in projects. This allows for more dynamic usage of dbt, such as with different source and destination data locations. In addition, Jinja also supports using for loops to simplify coding. 
+
+<img width="1044" height="467" alt="image" src="https://github.com/user-attachments/assets/5319946b-e7fc-42b4-8eb3-def80568d4e9" />
+
+There are many Jinja functions in dbt. This includes ref, which you'll use in the next lesson, to access models by name. The config command is an easy way to access config settings, and the docs command allows access to various documentation content. There are many other Jinja templates made available for dbt projects, including mathematical calculations and loop structures. 
+
+<img width="1111" height="331" alt="image" src="https://github.com/user-attachments/assets/c6fb1e2f-6ffc-4f18-b059-9ac5985684ae" />
+
+Let's consider a quick example illustrating some Jinja basics. Let's first look at a query written directly in SQL. 
+You can see that we're looking for three different columns: start_date, update_date, and end_date. We wrap each of these with a COALESCE statement, give a default date, and rename it to the intended column name. You'll notice that we have a lot of repetition in the code with only the column name changing. Let's now look at using Jinja and a for loop to recreate this query. We still have the SELECT and FROM statements, but you'll notice that the actual columns are no longer present. We construct a for loop where we iterate through the list of column names and substitute them where you see the column variables in the COALESCE statement. This effectively generates the same query as above. 
+
+<img width="1156" height="578" alt="image" src="https://github.com/user-attachments/assets/6c889657-d79c-4f87-9712-5b11157ef8af" />
+
