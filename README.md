@@ -310,3 +310,12 @@ if (con.execute('select * as total_rides from total_creditcard_riders_by_day').f
   with open('/home/repl/workspace/successful_data_check', 'w') as f:
     f.write('54743')
 ```
+
+To actually generate the documentation, dbt provides a subcommand, dbt docs. The dbt docs subcommand has a few subcommands of its own. This includes the help option, dbt docs -h, which gives a description of the commands available for dbt docs. Let's talk about the primary one, dbt docs generate. This will traverse the content of our project, automatically creating the documentation website and formatting it into a static website. Given this documentation will update as we add models, tests, and so on, we should run this command after generating the project with dbt run. 
+
+<img width="1153" height="362" alt="image" src="https://github.com/user-attachments/assets/25bbf44a-d53b-4101-910e-db0d396992d4" />
+
+To access the generated documentation, we'll need a web browser and the documentation to be hosted somewhere. There are several options for hosting the documentation depending on our needs. These can include using the other subcommand for dbt docs, the dbt docs serve subcommand. This starts a webserver on the local system and provides access to the documentation. Note that while convenient, this should only be used locally during development as it is not designed with security in mind. The other option for hosting the documentation is using another hosting service. This can include dbt cloud, Amazon's S3, any modern web server including Nginx, Apache, and so forth. 
+
+<img width="1152" height="582" alt="image" src="https://github.com/user-attachments/assets/642b2598-2853-4e78-a875-fd7c17cb480a" />
+
