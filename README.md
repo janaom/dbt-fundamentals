@@ -364,3 +364,66 @@ A quick example illustrates the change - in the first query, we're directly usin
 
 <img width="1155" height="227" alt="image" src="https://github.com/user-attachments/assets/868ea3f0-965d-4524-868a-2c3d2848f9bc" />
 
+
+
+```python
+-- Update SQL to use Jinja reference
+select 
+   date_part('day', tpep_pickup_datetime) as day,
+   count(*) as total_riders
+-- Update the line below to use a Jinja function
+from taxi_rides_raw
+where payment_type = 1
+group by day
+
+
+repl:~/workspace/nyc_yellow_taxi$ dbt run
+17:51:12  Running with dbt=1.5.1
+17:51:12  Unable to do partial parsing because saved manifest not found. Starting full parse.
+17:51:13  Found 2 models, 0 tests, 0 snapshots, 0 analyses, 313 macros, 0 operations, 0 seed files, 0 sources, 0 exposures, 0 metrics, 0 groups
+17:51:13  
+17:51:13  Concurrency: 1 threads (target='dev')
+17:51:13  
+17:51:13  1 of 2 START sql view model main.creditcard_riders_by_day ...................... [RUN]
+17:51:13  1 of 2 ERROR creating sql view model main.creditcard_riders_by_day ............. [ERROR in 0.07s]
+17:51:13  2 of 2 START sql view model main.taxi_rides_raw ................................ [RUN]
+17:51:13  2 of 2 OK created sql view model main.taxi_rides_raw ........................... [OK in 0.07s]
+17:51:13  
+17:51:13  Finished running 2 view models in 0 hours 0 minutes and 0.23 seconds (0.23s).
+17:51:13  
+17:51:13  Completed with 1 error and 0 warnings:
+17:51:13  
+17:51:13  Runtime Error in model creditcard_riders_by_day (models/taxi_rides/creditcard_riders_by_day.sql)
+17:51:13    Catalog Error: Table with name taxi_rides_raw does not exist!
+17:51:13    Did you mean "temp.information_schema.tables"?
+17:51:13  
+17:51:13  Done. PASS=1 WARN=0 ERROR=1 SKIP=0 TOTAL=2
+
+##Made changes
+-- Update SQL to use Jinja reference
+select 
+   date_part('day', tpep_pickup_datetime) as day,
+   count(*) as total_riders
+-- Update the line below to use a Jinja function
+from {{ ref('taxi_rides_raw') }}
+where payment_type = 1
+group by day
+
+repl:~/workspace/nyc_yellow_taxi$ dbt run -f
+17:54:04  Running with dbt=1.5.1
+17:54:04  Found 2 models, 0 tests, 0 snapshots, 0 analyses, 313 macros, 0 operations, 0 seed files, 0 sources, 0 exposures, 0 metrics, 0 groups
+17:54:04  
+17:54:04  Concurrency: 1 threads (target='dev')
+17:54:04  
+17:54:04  1 of 2 START sql view model main.taxi_rides_raw ................................ [RUN]
+17:54:04  1 of 2 OK created sql view model main.taxi_rides_raw ........................... [OK in 0.14s]
+17:54:04  2 of 2 START sql view model main.creditcard_riders_by_day ...................... [RUN]
+17:54:04  2 of 2 OK created sql view model main.creditcard_riders_by_day ................. [OK in 0.05s]
+17:54:04  
+17:54:04  Finished running 2 view models in 0 hours 0 minutes and 0.28 seconds (0.28s).
+17:54:04  
+17:54:04  Completed successfully
+17:54:04  
+17:54:04  Done. PASS=2 WARN=0 ERROR=0 SKIP=0 TOTAL=2
+repl:~/workspace/nyc_yellow_taxi$ 
+```
