@@ -338,3 +338,29 @@ You can see that we're looking for three different columns: start_date, update_d
 
 <img width="1156" height="578" alt="image" src="https://github.com/user-attachments/assets/6c889657-d79c-4f87-9712-5b11157ef8af" />
 
+An example:
+
+```sql
+select
+{% for column_name in ['fare_amount', 'tip_amount', 'tolls_amount', 'total_amount'] %}
+  {{column_name}}{% if not loop.last %},{% endif %}
+{% endfor %}
+from taxi_rides_raw
+```
+
+First, what is a hierarchy in dbt? A hierarchy represents the dependencies within a dbt project, meaning the relationship between source and transformed data. This is also known as a DAG, or a directed acyclic graph. It's sometimes known as a lineage graph. Note that while a DAG is a common concept in data engineering tools, such as Spark or Airflow, we're referring to a DAG specifically as implemented in dbt. The primary purpose of a DAG or hierarchy is it allows models to be built and updated with their dependencies in mind. dbt must determine the order that models be built and run accordingly. 
+
+<img width="1145" height="395" alt="image" src="https://github.com/user-attachments/assets/7536c7fd-73b9-43e7-ae13-51d638c2f5a9" />
+
+Here, avg_fare_per_day and total_creditcard_riders_per_day are two tables that, in turn, depend on the taxi_rides_raw table. Knowing this hierarchy, dbt will build the taxi_rides_raw table first to make certain the data is available to build the other downstream tables. Without the lineage graph - or this hierarchy -, the tables would be built in alphabetical order, which would fail when attempting to build the avg_fare_per_day model as taxi_rides_raw would not yet be built. 
+
+<img width="1152" height="430" alt="image" src="https://github.com/user-attachments/assets/79b8e132-9873-4694-9031-bbb2855d7f36" />
+
+The next question is how are hierarchies defined in dbt? We can use the Jinja template language to define the model dependencies. This is done within the model definition file, meaning the .sql file. Most often, we define the hierarchies using the ref function within a Jinja template. To actually define a dependency, we simply replace the table name in our query with two opening curly braces, then ref open parenthesis single quote model name end quote close parenthesis, followed by two closing braces in our SQL query. The next step is to use dbt run, which will materialize the models. dbt will replace the ref templates with the actual table names in the generated SQL file. 
+
+<img width="1051" height="428" alt="image" src="https://github.com/user-attachments/assets/2808fc2e-15a4-44f0-833e-6c1ef27f8961" />
+
+A quick example illustrates the change - in the first query, we're directly using the name of the table. While this works, we may run into issues if the table is not created yet. To add the dependency, you'll notice we use Jinja to change the table name from taxi_rides_raw to {{ ref('taxi_rides_raw') }}. 
+
+<img width="1155" height="227" alt="image" src="https://github.com/user-attachments/assets/868ea3f0-965d-4524-868a-2c3d2848f9bc" />
+
