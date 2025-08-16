@@ -1,3 +1,5 @@
+# Introduction to dbt
+--------------------
 
 Start running `dbt` command.
 ```shell
@@ -427,3 +429,38 @@ repl:~/workspace/nyc_yellow_taxi$ dbt run -f
 17:54:04  Done. PASS=2 WARN=0 ERROR=0 SKIP=0 TOTAL=2
 repl:~/workspace/nyc_yellow_taxi$ 
 ```
+
+# Intermediate dbt
+
+------------------------
+
+We're going to first discuss testing in dbt and what that entails. Let's get started! 
+
+What is a test? In dbt, a test is an assertion or validation of various dbt objects. This includes models, which we introduced in the Introductory dbt course. It can also apply to other dbt objects such as sources and seeds, which we'll discuss later. Tests are used to verify our data is as expected. This includes tests for null values, verifying the values are in range, or the relationships between data. We can also create custom tests for validating specific logic. 
+
+<img width="971" height="444" alt="image" src="https://github.com/user-attachments/assets/64828399-c513-46fc-b442-8dbc1a9d4932" />
+
+There are three kinds of tests in dbt. The first is built-in, which are 4 pre-defined tests available for use. We'll cover these further in a moment. The other two types are singular and generic. We'll cover those later. 
+
+<img width="925" height="389" alt="image" src="https://github.com/user-attachments/assets/35dafb39-fb6f-4d75-a524-4919e4d113d6" />
+
+dbt's four built-in tests are: Unique, which verifies all values in a column are unique. not_null, which verifies all values in a column are not null. accepted_values verifies all values are within a specific list. These values are listed in a values: option. relationships, which also takes a to: and field: option. It verifies connection of an object to a specific table or column.
+
+<img width="1149" height="444" alt="image" src="https://github.com/user-attachments/assets/ac943420-5454-40dd-9f50-645e42a9933c" />
+
+Model tests are defined in a YAML file within the models directory - other tests are defined in their respective directories. We will name this file model_properties.yml. This .yml file can be named differently based on your preferences. The actual tests are defined under the tests subheading, under the column name option within the YAML. Let's consider an example defining tests on two columns of the taxi_rides_raw model. The tpep_pickup_datetime has a not_null test. The payment_type column has a not_null and an accepted values test. We're verifying the values are between 1 and 6. 
+
+<img width="1153" height="575" alt="image" src="https://github.com/user-attachments/assets/2986096b-b6cd-4ead-905d-e1c058232cee" />
+
+To run tests in dbt, use `dbt test` for the entire project or `dbt test --select modelname` to test a specific model, e.g., `dbt test --select customers`. The command output indicates which tests pass or fail. Note to find why a test fails, we need a few more steps. 
+
+<img width="1132" height="487" alt="image" src="https://github.com/user-attachments/assets/a6107c69-8eb5-4735-a52f-4f21edcb96f9" />
+
+To find the specific issues in our data, we need to use the compiled SQL code. This normally resides in the target/compiled/projectname/models/model_properties.yml directory. For our example, it's the target/compiled/nyc_yellow_taxi/models/model_properties.yml/ directory. Find the .sql file that matches the failed test or tests. Copy the contents into your database client and check how many rows exist with the issue. You can manually remove the data or update your model scripts to handle the issue— the latter is usually more sustainable. Afterward, rerun dbt run and dbt test to confirm the fix. 
+
+<img width="1134" height="359" alt="image" src="https://github.com/user-attachments/assets/be71304a-7792-4f5f-afa8-c922ed2209e0" />
+
+
+
+
+
