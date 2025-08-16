@@ -1,7 +1,7 @@
 
 ✅ [Introduction to dbt](https://github.com/janaom/dbt-fundamentals/blob/main/README.md#introduction-to-dbt)
 
-✅ Intermediate dbt
+✅ [Intermediate dbt](https://github.com/janaom/dbt-fundamentals/blob/main/README.md#intermediate-dbt)
 
 
 
