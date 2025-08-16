@@ -467,7 +467,85 @@ To find the specific issues in our data, we need to use the compiled SQL code. T
 
 <img width="1134" height="359" alt="image" src="https://github.com/user-attachments/assets/be71304a-7792-4f5f-afa8-c922ed2209e0" />
 
+## Exercise: Defining tests on a model
 
+After learning about tests within dbt, your manager has asked you to implement some quality tests on the data used by the marketing department. It seems some entries are appearing without values, while others have a value, but do not match up with what's expected in the data.
 
+Specifically, the issues with the columns are as follows:
 
+```python
+    payment_type
+        Should not be null.
+        Column values need to be between 1 and 6.
+```
 
+    Update the model_properties.yml file below to include the two appropriate tests for the payment_type column.
+    Generate your models with dbt run.
+    Test your data with the appropriate command.
+
+## Solution
+
+```yaml
+#model_properties.yml file
+
+version: 2
+
+models:
+- name: taxi_rides_raw
+  columns:
+    - name: fare_amount
+      tests:
+        - not_null
+    # Enter the name of the column
+    - name: payment_type
+    # Define the two tests
+      tests:
+        - not_null
+        - accepted_values:
+            values: [1, 2, 3, 4, 5, 6]
+```
+
+```python
+repl:~/workspace/nyc_yellow_taxi$ dbt run
+16:36:46  Running with dbt=1.9.4
+16:36:47  Registered adapter: duckdb=1.9.3
+16:36:47  Unable to do partial parsing because saved manifest not found. Starting full parse.
+16:36:50  [WARNING]: Configuration paths exist in your dbt_project.yml file which do not apply to any resources.
+There are 1 unused configuration paths:
+- models.nyc_yellow_taxi
+16:36:50  Found 1 model, 3 data tests, 428 macros
+16:36:50  
+16:36:50  Concurrency: 1 threads (target='dev')
+16:36:50  
+16:36:50  1 of 1 START sql view model main.taxi_rides_raw ................................ [RUN]
+16:36:50  1 of 1 OK created sql view model main.taxi_rides_raw ........................... [OK in 0.15s]
+16:36:50  
+16:36:50  Finished running 1 view model in 0 hours 0 minutes and 0.56 seconds (0.56s).
+16:36:50  
+16:36:50  Completed successfully
+16:36:50  
+16:36:50  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
+repl:~/workspace/nyc_yellow_taxi$ dbt test
+16:37:37  Running with dbt=1.9.4
+16:37:38  Registered adapter: duckdb=1.9.3
+16:37:38  [WARNING]: Configuration paths exist in your dbt_project.yml file which do not apply to any resources.
+There are 1 unused configuration paths:
+- models.nyc_yellow_taxi
+16:37:39  Found 1 model, 3 data tests, 428 macros
+16:37:39  
+16:37:39  Concurrency: 1 threads (target='dev')
+16:37:39  
+16:37:39  1 of 3 START test accepted_values_taxi_rides_raw_payment_type__1__2__3__4__5__6  [RUN]
+16:37:39  1 of 3 PASS accepted_values_taxi_rides_raw_payment_type__1__2__3__4__5__6 ...... [PASS in 0.09s]
+16:37:39  2 of 3 START test not_null_taxi_rides_raw_fare_amount .......................... [RUN]
+16:37:39  2 of 3 PASS not_null_taxi_rides_raw_fare_amount ................................ [PASS in 0.05s]
+16:37:39  3 of 3 START test not_null_taxi_rides_raw_payment_type ......................... [RUN]
+16:37:39  3 of 3 PASS not_null_taxi_rides_raw_payment_type ............................... [PASS in 0.02s]
+16:37:39  
+16:37:39  Finished running 3 data tests in 0 hours 0 minutes and 0.35 seconds (0.35s).
+16:37:39  
+16:37:39  Completed successfully
+16:37:39  
+16:37:39  Done. PASS=3 WARN=0 ERROR=0 SKIP=0 TOTAL=3
+repl:~/workspace/nyc_yellow_taxi$ 
+```
