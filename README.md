@@ -549,3 +549,22 @@ There are 1 unused configuration paths:
 16:37:39  Done. PASS=3 WARN=0 ERROR=0 SKIP=0 TOTAL=3
 repl:~/workspace/nyc_yellow_taxi$ 
 ```
+
+Let's now look at the first kind of custom tests available in dbt - singular data tests. 
+
+What is a singular test? It is the simplest custom data test within dbt. It is written as a SQL query, which returns the failing rows. Singular tests are .sql files in the relevant tests directory. 
+
+Let's look at an example. Consider an order table, with 7 columns, including subtotal and order_total. Let's create a test to verify the order_total is at least equal to the subtotal. We're verifying all taxes / shipping / etc have been applied appropriately. We'll create a query select * from order where order_total < subtotal This might seem counterintuitive since it's the opposite of what we're trying to validate. When writing singular tests, we need to return rows that fail the test condition. In this case, we want to ensure that order_total is always greater than or equal to the subtotal. So, our query should return any rows where order_total is less than the subtotal, identifying problem rows. By convention, we'll name this file assert_order_total_gte_subtotal.sql and save it in the tests directory. While you can choose any name, a descriptive one is helpful. Since the test name appears in errors and logs, a clear name makes debugging easier. 
+
+<img width="1122" height="549" alt="image" src="https://github.com/user-attachments/assets/906048aa-a6d0-42e8-a944-7c1980117744" />
+
+Let's consider another example, using Jinja templates. Much like when we define models, we can use Jinja functions to simplify the creation of the test. If you're unfamiliar with Jinja, refer to the introductory dbt course for an overview. The most common function we'll use is the ref function. Remember, this substitutes the proper name of an object when it's compiled for our target data warehouse. In this case, the ref('order') function would return the proper table name for order within the test. There are other functions that can be used, such as the source function. We'll discuss these in later videos. Note dbt applies substitutions when the test runs. If your dbt profile changes, rerun the project before testing. 
+
+<img width="1144" height="360" alt="image" src="https://github.com/user-attachments/assets/a25e6540-f627-4d53-8d6f-16cfb7dd7ed5" />
+
+Let's discuss test debugging. The testing workflow is similar to building models but requires less effort. When creating a new test, it's best to use a SQL editor to create the initial query and work through any typical SQL issues there. Place the query into the appropriate file and make sure to name the test uniquely. dbt can use duplicate named tests, but it's difficult to determine which test passes or fails in the output. You can use the dbt test --select testname command to run a specific test. With a large dataset containing many tests, the time required to run them all can increase greatly. The --select option should cut this down noticeably. Finally, check any errors in your test and update accordingly. 
+
+<img width="997" height="328" alt="image" src="https://github.com/user-attachments/assets/d78f7906-71b6-4416-aa18-9ec5eeb2e08f" />
+
+
+
