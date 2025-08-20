@@ -566,5 +566,27 @@ Let's discuss test debugging. The testing workflow is similar to building models
 
 <img width="997" height="328" alt="image" src="https://github.com/user-attachments/assets/d78f7906-71b6-4416-aa18-9ec5eeb2e08f" />
 
+Let's introduce the most powerful test type available - the generic, or reusable, test. 
+
+A reusable test, also called a generic test in dbt terminology, is a test that can be reused in multiple situations. It's like a built-in dbt test, but can validate any condition you can query within SQL. A generic test is created using Jinja templating—we'll cover the implementation details soon. The file is saved as a .sql file within the tests/generic subfolder in the dbt project. Note: a reusable test must be defined for each model that uses it in the model_properties.yml file. Again, this is similar to using built-in tests within dbt. 
+
+Let's take a look at a reusable test - this is an example to follow along as we explain the components. To create a usable test, we need to add a few things to our .sql file. For most any generic test, we will be substituting two objects - model and column_name. They are arguments to a Jinja function that becomes our test name. The first line of our test file must contain at least {% test testname(model, column_name) %} I say at least, as it's possible to add further arguments, which we'll discuss shortly. In our example, we're checking to see if a column is greater than 0. We define the test as check_gt_0 for the function name, with the model and column_name as parameters. The next portion contains our actual query, but note that we'll substitute in the model argument as a Jinja reference for the table, and the column_name argument as a reference for our validation check, usually in the where clause. In the example, our query is select * from table where object greater than 0. Note the {{ model }} and {{ column_name }} substitutions. Finally we'll add the line {% endtest %} to finish the code of the test. We add this to the example and save the file in the tests/generic directory.
+
+<img width="1167" height="524" alt="image" src="https://github.com/user-attachments/assets/615264c0-53e6-4d02-88c0-57a4b7d2aca5" />
+
+To apply our new reusable test, we update model_properties.yml file as with the built-in tests. For each test we wish to apply, we add it to the model / column. The model name is the model argument in the test. The column name is the column_name argument in the test. Here is a built-in test defined on the taxi_rides_raw table, verifying that the tpep_pickup_datetime is not null. Let's add our check_gt_0 test to the total_fare column. The test will be applied when we use dbt test. 
+
+<img width="1138" height="515" alt="image" src="https://github.com/user-attachments/assets/f1450305-1f8c-45e8-83e3-9e0329294de9" />
+
+It is possible to add extra parameters to reusable tests. This is similar to how the accepted_values and relationships tests have extra entries in the model_properties.yml file. To add extra arguments, we create the additional arguments on the Jinja header substituting into our select query as required. You could add multiple extra parameters as needed, but it's suggested to keep the number of required parameters fairly short. 
+
+<img width="1128" height="494" alt="image" src="https://github.com/user-attachments/assets/a8b945b8-5dcd-497f-8112-ad4499a7e77f" />
+
+To apply tests with extra parameters, we add the test as normal to the model_properties.yml file. We then add the extra arguments as options under the test name. In this case, define the check_columns_unequal entry to use the column_name2 parameter. Note the spacing is significant in YAML. 
+
+<img width="1140" height="463" alt="image" src="https://github.com/user-attachments/assets/88c91ad8-da3a-44e1-a87e-adbed2286a40" />
+
+
+
 
 
