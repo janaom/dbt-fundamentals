@@ -1,7 +1,11 @@
+📍 This repository contains my personal notes from the [dbt Fundamentals](https://app.datacamp.com/learn/skill-tracks/dbt-fundamentals) track on DataCamp.
+
+<img width="1504" height="389" alt="image" src="https://github.com/user-attachments/assets/24fa14e6-cce2-45f7-8aa5-a7902cc3b67a" />
+
 
 ✅ [Introduction to dbt](https://github.com/janaom/dbt-fundamentals/blob/main/README.md#introduction-to-dbt)
 
-✅ [Intermediate dbt](https://github.com/janaom/dbt-fundamentals/blob/main/README.md#intermediate-dbt)
+⏳ [Intermediate dbt](https://github.com/janaom/dbt-fundamentals/blob/main/README.md#intermediate-dbt)
 
 
 
